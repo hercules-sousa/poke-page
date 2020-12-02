@@ -1,24 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./app.css"
+import pokemonLogo from "./assets/poke-image.svg"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="container">
+      <div id="header-container">
+        
+        <svg height="300" width="800">
+          <ellipse cx="400" cy="" rx="370" ry="250" fill="#FFCB05"/>
+        </svg>
+
+        <div id="imageContainer">
+          <img src={pokemonLogo} alt="Pokemon Logo"/>
+        </div>
+      </div>
     </div>
   );
 }
