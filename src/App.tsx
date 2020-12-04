@@ -17,11 +17,7 @@ const App = () => {
       </div>
 
       <div
-        className="body"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "30% 70%",
-        }}
+        className="bodyContent"
       >
         <div id="leftBodyContainer">
           <img src={pokedex} alt="Pokedex" />
@@ -38,7 +34,31 @@ const App = () => {
         </div>
 
         <div id="RightBodyContainer">
-          <div className="pokeBox"></div>
+
+          <div className="pokeContainer">
+
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+            <div className="pokeBox"></div>
+
+          </div>
+
         </div>
       </div>
     </div>
