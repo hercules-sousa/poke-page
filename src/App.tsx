@@ -1,10 +1,22 @@
-import { relative } from "path";
-import React from "react";
+import React, { ObjectHTMLAttributes, useEffect, useState } from "react";
 import "./app.css";
 import pokemonLogo from "./assets/poke-image.svg";
 import pokedex from "./assets/pokedex-image.png";
 
 const App = () => {
+  const [pokemonInfo, setPokemonInfo] = useState<Object>([]);
+
+  useEffect(() => {
+    fetch("https://pokeapi.co/api/v2/pokemon?limit=100&offset=0").then(
+      (response) => {
+        response.json().then((data: { results: Object }) => {
+          setPokemonInfo(data.results);
+          console.log(Object.entries(pokemonInfo)[0][1]);
+        });
+      }
+    );
+  }, []);
+
   return (
     <div id="container">
       <div id="header">
@@ -46,7 +58,7 @@ const App = () => {
             <ellipse cx="15" cy="250" rx="240" ry="250" fill="#51AE5F" />
           </svg>
 
-          <img src={pokedex} alt="Pokedex" style={{ zIndex: 5, }} />
+          <img src={pokedex} alt="Pokedex" style={{ zIndex: 5 }} />
 
           <div id="loremBox">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus
@@ -60,7 +72,6 @@ const App = () => {
         </div>
 
         <main id="RightBodyContainer">
-
           <svg
             height="500"
             width="500"
@@ -74,25 +85,15 @@ const App = () => {
           </svg>
 
           <div className="pokeContainer">
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
-
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
-
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
-
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
-            <div className="pokeBox"></div>
+            <div className="pokeBox">
+              <img
+                className="pokemon"
+                width="120"
+                height="120"
+                src="https://pokeres.bastionbot.org/images/pokemon/1.png"
+                alt="Pokemon"
+              />
+            </div>
           </div>
         </main>
       </body>
@@ -103,9 +104,7 @@ const App = () => {
           height: "10vh",
           position: "relative",
         }}
-      >
-        
-      </footer>
+      ></footer>
     </div>
   );
 };
