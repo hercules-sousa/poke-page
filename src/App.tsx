@@ -1,18 +1,20 @@
-import React, { ObjectHTMLAttributes, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./app.css";
 import pokemonLogo from "./assets/poke-image.svg";
 import pokedex from "./assets/pokedex-image.png";
 
 const App = () => {
-  const [pokemonInfo, setPokemonInfo] = useState<Object>([]);
+  const [pokemonInfo, setPokemonInfo] = useState<Array<Object>>([{}]);
 
   useEffect(() => {
-    fetch("https://pokeapi.co/api/v2/pokemon?limit=100&offset=0").then(
+    fetch("https://pokeapi.co/api/v2/pokemon?limit=20&offset=0").then(
       (response) => {
-        response.json().then((data: { results: Object }) => {
-          setPokemonInfo(data.results);
-          console.log(Object.entries(pokemonInfo)[0][1]);
-        });
+        console.log(response.status)
+        if(response.status === 200) {
+          response.json().then((data: { results: Array<Object> }) => {
+            setPokemonInfo(data.results)
+          });
+        }
       }
     );
   }, []);
@@ -22,7 +24,7 @@ const App = () => {
       <div id="header">
         <div id="LogoContainer">
           <svg height="250" width="800">
-            <ellipse cx="400" cy="" rx="370" ry="250" fill="#FFCB05" />
+            <ellipse cx="400" cy="0" rx="370" ry="250" fill="#FFCB05" />
           </svg>
 
           <div id="imageContainer">
@@ -43,7 +45,7 @@ const App = () => {
         </svg>
       </div>
 
-      <body className="bodyContent">
+      <div className="bodyContent">
         <div id="leftBodyContainer">
           <svg
             height="500"
@@ -85,18 +87,22 @@ const App = () => {
           </svg>
 
           <div className="pokeContainer">
-            <div className="pokeBox">
-              <img
-                className="pokemon"
-                width="120"
-                height="120"
-                src="https://pokeres.bastionbot.org/images/pokemon/1.png"
-                alt="Pokemon"
-              />
-            </div>
+            {pokemonInfo.map((pokemon: any) => {
+              return (
+                <div key={pokemon.name} className="pokeBox">
+                  <img
+                    width="80"
+                    height="80"
+                    src={`https://pokeres.bastionbot.org/images/pokemon/${pokemonInfo.indexOf(pokemon) + 1}.png`}
+                    alt="Pokemon"
+                  />
+                  <h3>{pokemon.name}</h3>
+                </div>
+              )
+            })}
           </div>
         </main>
-      </body>
+      </div>
 
       <footer
         style={{
