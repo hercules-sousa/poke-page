@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Pagination from "@material-ui/lab/Pagination"
+
 import "./styles.css";
 import pokemonLogo from "../../assets/poke-image.svg"
 import pokedex from "../../assets/pokedex-image.png"
@@ -107,10 +109,15 @@ const Landing = () => {
       <footer
         style={{
           flex: 1,
-          height: "10vh",
+          height: "16vh",
           position: "relative",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-      ></footer>
+      >
+        <Pagination count={10} color="secondary" />
+      </footer>
     </div>
   );
 };
