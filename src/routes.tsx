@@ -4,7 +4,9 @@ import {
   Route,
 } from "react-router-dom";
 
-const routes = () => {
+import Landing from "./pages/lading"
+
+const Routes = () => {
   return (
     <Router>
       <Route path="/" exact component={Landing}></Route>
@@ -12,4 +14,4 @@ const routes = () => {
   )
 }
 
-export default routes
+export default Routes
