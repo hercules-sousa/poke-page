@@ -21,6 +21,23 @@ const Landing = () => {
     );
   }, []);
 
+  function fetchPokemonInformation(start: number) {
+    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${start}`).then(
+      (response) => {
+        console.log(response.status)
+        if(response.status === 200) {
+          response.json().then((data: { results: Array<Object> }) => {
+            setPokemonInfo(data.results)
+          });
+        }
+      }
+    );
+  }
+
+  async function handlePaginationChange(value: number) {
+    fetchPokemonInformation(value)
+  }
+
   return (
     <div id="container">
       <div id="header">
@@ -116,7 +133,7 @@ const Landing = () => {
           justifyContent: "center",
         }}
       >
-        <Pagination count={10} color="secondary" />
+        <Pagination count={10} color="secondary" onChange={(event, value) => handlePaginationChange(value)}/>
       </footer>
     </div>
   );
