@@ -23,6 +23,7 @@ const Landing = () => {
   }, []);
 
   function fetchPokemonInformation(value: number) {
+    console.log("Buscando a partir de " + value)
     fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${value}`).then(
       (response) => {
         console.log(response.status)
@@ -39,7 +40,7 @@ const Landing = () => {
   async function handlePaginationChange(value: number) {
     console.log((value - 1) * 20)
     setStart((value - 1) * 20)
-    fetchPokemonInformation(value)
+    fetchPokemonInformation((value - 1) * 20)
   }
 
   return (
