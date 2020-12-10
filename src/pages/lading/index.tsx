@@ -7,6 +7,7 @@ import pokedex from "../../assets/pokedex-image.png"
 
 const Landing = () => {
   const [pokemonInfo, setPokemonInfo] = useState<Array<Object>>([{}]);
+  const [start, setStart] = useState<number>(0)
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=20&offset=0").then(
@@ -21,12 +22,13 @@ const Landing = () => {
     );
   }, []);
 
-  function fetchPokemonInformation(start: number) {
-    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${start}`).then(
+  function fetchPokemonInformation(value: number) {
+    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${value}`).then(
       (response) => {
         console.log(response.status)
         if(response.status === 200) {
           response.json().then((data: { results: Array<Object> }) => {
+            console.log(data.results)
             setPokemonInfo(data.results)
           });
         }
@@ -35,6 +37,8 @@ const Landing = () => {
   }
 
   async function handlePaginationChange(value: number) {
+    console.log((value - 1) * 20)
+    setStart((value - 1) * 20)
     fetchPokemonInformation(value)
   }
 
@@ -108,11 +112,11 @@ const Landing = () => {
           <div className="pokeContainer">
             {pokemonInfo.map((pokemon: any) => {
               return (
-                <div key={pokemon.name} className="pokeBox">
+                <div key={pokemonInfo.indexOf(pokemon)} className="pokeBox">
                   <img
                     width="80"
                     height="80"
-                    src={`https://pokeres.bastionbot.org/images/pokemon/${pokemonInfo.indexOf(pokemon) + 1}.png`}
+                    src={`https://pokeres.bastionbot.org/images/pokemon/${start + pokemonInfo.indexOf(pokemon) + 1}.png`}
                     alt="Pokemon"
                   />
                   <h3>{pokemon.name}</h3>
