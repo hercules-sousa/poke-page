@@ -10,27 +10,25 @@ const Landing = () => {
   const [start, setStart] = useState<number>(0)
 
   useEffect(() => {
-    fetchPokemonInformation(0);
+    fetchPokemonInformation(1);
   }, []);
 
   function fetchPokemonInformation(value: number) {
-    console.log("Buscando a partir de " + value)
+    value = (value - 1) * 20
+    setStart(value)
     fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${value}`).then(
       (response) => {
-        console.log(response.status)
         if(response.status === 200) {
           response.json().then((data: { results: Array<Object> }) => {
-            console.log(data.results)
             setPokemonInfo(data.results)
+          }).catch((err) => {
+            console.log(err)
           });
         }
       }
-    );
-  }
-
-  async function handlePaginationChange(value: number) {
-    setStart((value - 1) * 20)
-    fetchPokemonInformation((value - 1) * 20)
+    ).catch((err) => {
+      console.log(err)
+    });
   }
 
   return (
@@ -118,17 +116,8 @@ const Landing = () => {
         </main>
       </div>
 
-      <footer
-        style={{
-          flex: 1,
-          height: "16vh",
-          position: "relative",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Pagination count={35} color="secondary" onChange={(event, value) => handlePaginationChange(value)}/>
+      <footer>
+        <Pagination count={35} color="secondary" onChange={(event, value) => fetchPokemonInformation(value)}/>
       </footer>
     </div>
   );
