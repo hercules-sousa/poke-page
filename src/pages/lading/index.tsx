@@ -114,8 +114,8 @@ const Landing = () => {
                   className="pokeBox"
                 >
                   <img
-                    width="180"
-                    height="180"
+                    width="80"
+                    height="80"
                     src={`https://pokeres.bastionbot.org/images/pokemon/${
                       start + pokemonInfo.indexOf(pokemon) + 1
                     }.png`}
