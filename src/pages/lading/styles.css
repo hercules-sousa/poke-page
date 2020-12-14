@@ -74,6 +74,20 @@ html body {
   flex-direction: column;
 }
 
+.pokeBox[data-pokeAnimationState="1"] {
+  animation-name: pokeboxEntering;
+  animation-duration: 1s;
+}
+
+@keyframes pokeboxEntering {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .bodyContent {
   display: grid;
   grid-template-columns: 30% 70%;
@@ -86,4 +100,19 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.blackContainer {
+  height: 100vh;
+  width: 100%;
+  background-color: black;
+}
+
+.whiteBox {
+  position: relative;
+  height: 5cm;
+  width: 5cm;
+  background-color: white;
+  top: 2cm;
+  left: 2cm;
 }

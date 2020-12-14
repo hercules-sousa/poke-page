@@ -8,12 +8,15 @@ import pokedex from "../../assets/pokedex-image.png";
 const Landing = () => {
   const [pokemonInfo, setPokemonInfo] = useState<Array<Object>>([{}]);
   const [start, setStart] = useState<number>(0);
+  const [animationState, setAnimationState] = useState<number>(1)
+  const [pokeAnimationState, setPokeAnimationState] = useState<number>(1)
 
   useEffect(() => {
     fetchPokemonInformation(1);
   }, []);
 
   function fetchPokemonInformation(value: number) {
+    setPokeAnimationState(1)
     value = (value - 1) * 20;
     setStart(value);
     fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${value}`)
@@ -104,7 +107,12 @@ const Landing = () => {
           <div className="pokeContainer">
             {pokemonInfo.map((pokemon: any) => {
               return (
-                <div key={pokemonInfo.indexOf(pokemon)} className="pokeBox">
+                <div
+                  data-pokeAnimationState={pokeAnimationState}
+                  onAnimationEnd={() => setPokeAnimationState(0)}
+                  key={pokemonInfo.indexOf(pokemon)} 
+                  className="pokeBox"
+                >
                   <img
                     width="80"
                     height="80"
@@ -128,6 +136,7 @@ const Landing = () => {
           onChange={(event, value) => fetchPokemonInformation(value)}
         />
       </footer>
+
     </div>
   );
 };
