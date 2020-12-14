@@ -1,34 +1,37 @@
 import React, { useEffect, useState } from "react";
-import Pagination from "@material-ui/lab/Pagination"
+import Pagination from "@material-ui/lab/Pagination";
 
 import "./styles.css";
-import pokemonLogo from "../../assets/poke-image.svg"
-import pokedex from "../../assets/pokedex-image.png"
+import pokemonLogo from "../../assets/poke-image.svg";
+import pokedex from "../../assets/pokedex-image.png";
 
 const Landing = () => {
   const [pokemonInfo, setPokemonInfo] = useState<Array<Object>>([{}]);
-  const [start, setStart] = useState<number>(0)
+  const [start, setStart] = useState<number>(0);
 
   useEffect(() => {
     fetchPokemonInformation(1);
   }, []);
 
   function fetchPokemonInformation(value: number) {
-    value = (value - 1) * 20
-    setStart(value)
-    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${value}`).then(
-      (response) => {
-        if(response.status === 200) {
-          response.json().then((data: { results: Array<Object> }) => {
-            setPokemonInfo(data.results)
-          }).catch((err) => {
-            console.log(err)
-          });
+    value = (value - 1) * 20;
+    setStart(value);
+    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${value}`)
+      .then((response) => {
+        if (response.status === 200) {
+          response
+            .json()
+            .then((data: { results: Array<Object> }) => {
+              setPokemonInfo(data.results);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
-      }
-    ).catch((err) => {
-      console.log(err)
-    });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -105,19 +108,25 @@ const Landing = () => {
                   <img
                     width="80"
                     height="80"
-                    src={`https://pokeres.bastionbot.org/images/pokemon/${start + pokemonInfo.indexOf(pokemon) + 1}.png`}
+                    src={`https://pokeres.bastionbot.org/images/pokemon/${
+                      start + pokemonInfo.indexOf(pokemon) + 1
+                    }.png`}
                     alt="Pokemon"
                   />
                   <h3>{pokemon.name}</h3>
                 </div>
-              )
+              );
             })}
           </div>
         </main>
       </div>
 
       <footer>
-        <Pagination count={35} color="secondary" onChange={(event, value) => fetchPokemonInformation(value)}/>
+        <Pagination
+          count={35}
+          color="secondary"
+          onChange={(event, value) => fetchPokemonInformation(value)}
+        />
       </footer>
     </div>
   );
