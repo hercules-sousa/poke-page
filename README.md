@@ -25,7 +25,11 @@ This project was built using the follow technologies:
 - [React](https://reactjs.org/)
 - [PokeAPI](https://pokeapi.co/)
 
-# :construction_worker: How to run
+# :red_circle: Visit the page:
+
+https://poke-page-ltp86vo6j.vercel.app/
+
+# :construction_worker: How to run locally
 
 ```bash
 # Clone Repository
