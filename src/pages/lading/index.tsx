@@ -1,41 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Pagination from "@material-ui/lab/Pagination";
 
 import "./styles.css";
 import pokemonLogo from "../../assets/poke-image.svg";
 import pokedex from "../../assets/pokedex-image.png";
 
+interface PokemonBasicInfo {
+    name?: string;
+    url?: string;
+}
+
+interface PokemonEnhancedInfo extends PokemonBasicInfo {
+    pokedexEntry?: string;
+}
+
 const Landing = () => {
-  const [pokemonInfo, setPokemonInfo] = useState<Array<Object>>([{}]);
+  const [pokemonInfo, setPokemonInfo] = useState<Array<PokemonBasicInfo>>([{}]);
   const [start, setStart] = useState<number>(0);
-  const [animationState, setAnimationState] = useState<number>(1)
   const [pokeAnimationState, setPokeAnimationState] = useState<number>(1)
 
-  useEffect(() => {
-    fetchPokemonInformation(1);
-  }, []);
+  const fetchPokemonInformation = useCallback(async (value: number) => {
 
-  function fetchPokemonInformation(value: number) {
     setPokeAnimationState(1)
     value = (value - 1) * 20;
     setStart(value);
-    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${value}`)
-      .then((response) => {
-        if (response.status === 200) {
-          response
-            .json()
-            .then((data: { results: Array<Object> }) => {
-              setPokemonInfo(data.results);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+
+    const pokemonBasicData: PokemonBasicInfo[] = (await (await fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${value}`)).json()).results;
+
+    const pokemonEnhancedDataPromises = pokemonBasicData.map(async (currentPokemonInfo) => {
+      const splitPokemonPokedexIndex = currentPokemonInfo.url!!.split('/')
+      const pokemonPokedexIndex = splitPokemonPokedexIndex[splitPokemonPokedexIndex.length - 2]
+      const currentPokemonEnhancedInfo = await (await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonPokedexIndex}`)).json()
+
+      const currentPokemonPokedexEntry = (currentPokemonEnhancedInfo.flavor_text_entries as any[]).find((currentEntry) => currentEntry.language.name === "en").flavor_text
+      return {
+        ...currentPokemonInfo,
+        pokedexEntry: currentPokemonPokedexEntry
+      } as PokemonEnhancedInfo
+    })
+
+    setPokemonInfo(await Promise.all(pokemonEnhancedDataPromises))
+  }, [setPokemonInfo]);
+
+  useEffect(() => {
+    (async () => {
+      await fetchPokemonInformation(1);
+    })()
+  }, [setPokemonInfo,fetchPokemonInformation]);
+
+
 
   return (
     <div id="container">
@@ -105,22 +118,26 @@ const Landing = () => {
           </svg>
 
           <div className="pokeContainer">
-            {pokemonInfo.map((pokemon: any) => {
+            {pokemonInfo.map((pokemon: PokemonEnhancedInfo,idx) => {
               return (
                 <div
                   data-pokeAnimationState={pokeAnimationState}
                   onAnimationEnd={() => setPokeAnimationState(0)}
-                  key={pokemonInfo.indexOf(pokemon)} 
+                  key={pokemonInfo.indexOf(pokemon)}
                   className="pokeBox"
                 >
                   <img
                     width="80"
                     height="80"
-                    src={`https://pokeres.bastionbot.org/images/pokemon/${
+                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
                       start + pokemonInfo.indexOf(pokemon) + 1
                     }.png`}
                     alt="Pokemon"
-                  />
+                  >
+                  </img>
+                    <div>
+                        {pokemon.pokedexEntry}
+                    </div>
                   <h3>{pokemon.name}</h3>
                 </div>
               );
