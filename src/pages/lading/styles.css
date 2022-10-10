@@ -72,6 +72,30 @@ html body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  position: relative;
+}
+
+.pokeBox div {
+  z-index: 101;
+  position: absolute;
+  top: -20%;
+  padding: 2px 4px;
+  border-radius: 6px;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  font-family: sans-serif;
+  font-size: 0.6rem;
+  width: 70%;
+  max-height: 50%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  visibility: hidden;
+  -webkit-transition: visibility 0s, opacity 0.5s linear;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+
+.pokeBox:hover div{
+  visibility: visible;
 }
 
 .pokeBox[data-pokeAnimationState="1"] {
